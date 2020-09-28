@@ -15,13 +15,16 @@ package cr.una.taskapp.backend.webservice;
 
 import cr.una.taskapp.backend.common.Constants;
 import cr.una.taskapp.backend.dto.PriorityDto;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 import cr.una.taskapp.backend.service.IPriorityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -59,9 +62,9 @@ public class PriorityController {
      */
     @GetMapping("{id}")
     @ResponseBody
-    public PriorityDto findById(@PathVariable Long id) {
-        Priority priority = service.findById(id);
-        return convertToDto(priority);
+    public PriorityDto findById(@PathVariable Long id) throws PriorityNotFoundException {
+            Priority priority = service.findById(id);
+            return convertToDto(priority);
     }
 
     /**
@@ -95,7 +98,11 @@ public class PriorityController {
     @DeleteMapping("{id}")
     @ResponseBody
     public void deleteById(@PathVariable Long id) {
-        service.deleteById(id);
+        try {
+            service.deleteById(id);
+        } catch (PriorityNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Priority Not Found", ex);
+        }
     }
     
     /**

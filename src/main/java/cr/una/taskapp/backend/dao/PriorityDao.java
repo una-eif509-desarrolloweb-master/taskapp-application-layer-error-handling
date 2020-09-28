@@ -1,6 +1,7 @@
 package cr.una.taskapp.backend.dao;
 
 import com.google.common.base.Preconditions;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,15 @@ import java.util.List;
 public class PriorityDao extends AbstractHibernateDao implements IPriorityDao {
 
     @Override
-    public Priority findById(final long id) { return getCurrentSession().get(Priority.class, id); }
+    public Priority findById(final long id) throws PriorityNotFoundException {
+        Priority priority = getCurrentSession().get(Priority.class, id);
+
+        if (priority == null) {
+            throw new PriorityNotFoundException("Priority Not Found");
+        } else {
+            return priority;
+        }
+    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -42,7 +51,7 @@ public class PriorityDao extends AbstractHibernateDao implements IPriorityDao {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(long id) throws PriorityNotFoundException {
         final Priority priority = findById(id);
         Preconditions.checkState(priority != null);
         delete(priority);

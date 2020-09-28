@@ -1,6 +1,7 @@
 package cr.una.taskapp.backend.service;
 
 import cr.una.taskapp.backend.dao.IPriorityDao;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class PriorityService implements IPriorityService {
      * @return the priority found
      */
     @Override
-    public Priority findById(long id) {
+    public Priority findById(long id) throws PriorityNotFoundException {
         return dao.findById(id);
     }
 
@@ -79,7 +80,7 @@ public class PriorityService implements IPriorityService {
      * @param id the id of the entity to delete
      */
     @Override
-    public void deleteById(long id) {
+    public void deleteById(long id) throws PriorityNotFoundException {
         dao.deleteById(id);
     }
 }

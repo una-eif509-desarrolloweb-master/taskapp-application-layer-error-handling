@@ -1,8 +1,11 @@
 package cr.una.taskapp.backend.security;
 
 import cr.una.taskapp.backend.common.Constants;
+import cr.una.taskapp.backend.error.CustomAccessDeniedHandler;
 import cr.una.taskapp.backend.service.AppUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +18,16 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@ComponentScan("cr.una.taskapp.backend.security")
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final AppUserDetailsService appUserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private CustomAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     public WebSecurity(AppUserDetailsService appUserDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.appUserDetailsService = appUserDetailsService;
@@ -26,7 +36,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().and().csrf().disable()
+                .authorizeRequests()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, Constants.URL_PREFIX.concat("users/sign-up")).permitAll()
                 .anyRequest().authenticated()
                 .and()

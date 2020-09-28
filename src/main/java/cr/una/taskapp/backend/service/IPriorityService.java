@@ -1,5 +1,6 @@
 package cr.una.taskapp.backend.service;
 
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 
 import java.util.List;
@@ -14,8 +15,9 @@ public interface IPriorityService {
      * Find priority by id
      * @param id identification of the priority
      * @return the priority found
+     * @throws PriorityNotFoundException There is no priority found
      */
-    public Priority findById (final long id);
+    public Priority findById (final long id) throws PriorityNotFoundException;
 
     /**
      * Method to find all entities
@@ -46,6 +48,7 @@ public interface IPriorityService {
     /**
      * Method to delete a entity in the database by id
      * @param id the id of the entity to delete
+     * @throws PriorityNotFoundException There is no priority found
      */
-    public void deleteById (final long id);
+    public void deleteById (final long id) throws PriorityNotFoundException;
 }
