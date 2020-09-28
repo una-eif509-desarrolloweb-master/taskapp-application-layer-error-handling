@@ -16,7 +16,6 @@ public class PriorityDao extends AbstractHibernateDao implements IPriorityDao {
     @Override
     public Priority findById(final long id) throws PriorityNotFoundException {
         Priority priority = getCurrentSession().get(Priority.class, id);
-
         if (priority == null) {
             throw new PriorityNotFoundException("Priority Not Found");
         } else {
