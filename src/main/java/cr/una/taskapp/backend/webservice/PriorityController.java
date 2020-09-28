@@ -98,7 +98,12 @@ public class PriorityController {
     @DeleteMapping("{id}")
     @ResponseBody
     public void deleteById(@PathVariable Long id) throws PriorityNotFoundException {
-        service.deleteById(id);
+        try {
+            service.deleteById(id);
+        } catch (PriorityNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Priority Not Found", ex);
+        }
     }
     
     /**
