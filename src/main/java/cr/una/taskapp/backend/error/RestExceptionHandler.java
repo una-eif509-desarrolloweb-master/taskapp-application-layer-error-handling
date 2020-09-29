@@ -188,7 +188,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     // PriorityNotFoundException
     @ExceptionHandler({PriorityNotFoundException.class})
-    public ResponseEntity<Object> handleAll(final PriorityNotFoundException ex, final WebRequest request) {
+    public ResponseEntity<Object> handlePriorityNotFound(final PriorityNotFoundException ex, final WebRequest request) {
+        logger.info(ex.getClass().getName());
+        logger.error("error", ex);
+        //
+        final ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(),"error occurred");
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    // ResponseStatusException
+    @ExceptionHandler({ResponseStatusException.class})
+    public ResponseEntity<Object> handleResponseStatusException(final ResponseStatusException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
         //
