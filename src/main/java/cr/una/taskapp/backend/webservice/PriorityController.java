@@ -70,7 +70,7 @@ public class PriorityController {
     /**
      * Save the new Priority
      * @param priorityDto the priority saved
-     * @return
+     * @return the priority updated
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
