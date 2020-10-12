@@ -8,6 +8,7 @@ package cr.una.taskapp.backend.service.dao;
 
 import cr.una.taskapp.backend.dao.IPriorityDao;
 import cr.una.taskapp.backend.dao.ITaskDao;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Status;
 import cr.una.taskapp.backend.model.Task;
 import cr.una.taskapp.backend.model.User;
@@ -62,7 +63,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws PriorityNotFoundException {
         DateTime dt = new DateTime();
         Task task = new Task();
         Status status = new Status();

@@ -2,6 +2,7 @@ package cr.una.taskapp.backend.service.dao;
 
 
 import cr.una.taskapp.backend.dao.IPriorityDao;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Test Class
@@ -35,7 +35,7 @@ public class PriorityDaoTest {
     private IPriorityDao priorityDao;
 
     @Test
-    public void testFindById() {
+    public void testFindById() throws PriorityNotFoundException {
         Priority priority = priorityDao.findById(2);
 
         assertEquals(priority.getLabel(), "Medium");
@@ -61,7 +61,7 @@ public class PriorityDaoTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws PriorityNotFoundException {
         Priority priorityUpdated = new Priority();
 
         priorityUpdated.setIdPriority(2L);
@@ -74,21 +74,21 @@ public class PriorityDaoTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws PriorityNotFoundException {
         Priority priorityDeleted = new Priority();
         priorityDeleted.setIdPriority(1L);
 
         priorityDao.delete(priorityDeleted);
 
         Priority priority = priorityDao.findById(1);
-        assertTrue(priority == null);
+        assertNull(priority);
     }
 
     @Test
-    public void testDeleteById() {
+    public void testDeleteById() throws PriorityNotFoundException {
         priorityDao.deleteById(1L);
 
         Priority priority = priorityDao.findById(1);
-        assertTrue(priority == null);
+        assertNull(priority);
     }
 }

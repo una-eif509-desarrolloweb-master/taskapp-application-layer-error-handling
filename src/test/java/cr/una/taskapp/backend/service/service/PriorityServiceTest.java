@@ -1,6 +1,7 @@
 package cr.una.taskapp.backend.service.service;
 
 import cr.una.taskapp.backend.dao.IPriorityDao;
+import cr.una.taskapp.backend.exception.PriorityNotFoundException;
 import cr.una.taskapp.backend.model.Priority;
 import cr.una.taskapp.backend.model.Task;
 import cr.una.taskapp.backend.service.PriorityService;
@@ -26,7 +27,7 @@ public class PriorityServiceTest {
     private IPriorityDao priorityDao;
 
     @Test
-    public void testFindById() {
+    public void testFindById() throws PriorityNotFoundException {
         // given
         final Long id = 1l;
         Task task = new Task();
